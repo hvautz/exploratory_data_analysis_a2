@@ -11,6 +11,7 @@ library(quantmod)
 # 6) Compare emissions from motor vehicle sources in Baltimore City with emissions from motor vehicle 
 #    sources in Los Angeles County, California (fips == "06037"). Which city has seen greater changes
 #    over time in motor vehicle emissions?
+NEI <- data.table(NEI)[ fips %in% c("24510", "06037"), ]
 data <- merge( data.table(NEI), data.table(SCC), by = "SCC", all=TRUE)
 # select only Baltimore and LA
 q6 <- data[ fips %in% c("24510", "06037"), ]
@@ -35,7 +36,7 @@ options(scipen=999)   ### remove scientific notation in printing
 
 plot <- ggplot(q6, aes(factor(year), y=diff, fill=city))
 plot <- plot + geom_bar(position="dodge", stat="identity")
-plot <- plot + xlab("year") + ylab("relative Rate of change")
+plot <- plot + xlab("year") + ylab("relative Rate of change to previous measurement")
 plot <- plot + labs(title = "Comparison: Relative emission changes in Baltimore and Los Angeles")
 plot <- plot + theme(plot.title = element_text(size=rel(1.5)))
 print(plot)
